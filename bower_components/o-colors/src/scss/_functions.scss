@@ -1,0 +1,89 @@
+////
+/// @group o-colors
+/// @link http://registry.origami.ft.com/components/o-colors
+////
+
+/// Return the CSS color for a palette colour name
+///
+/// @param {String} $name
+@function oColorsGetPaletteColor($name) {
+	@if (map-has-key($o-colors-palette, $name)) {
+		@return map-get($o-colors-palette, $name);
+	} @else {
+		@warn "Color name '#{inspect($name)}' is not defined in the palette";
+		@return null;
+	}
+}
+
+/// Return the defined palette colour name for a use case / property combination
+///
+/// @access private
+///
+/// @param {String} $usecase
+/// @param {String} $property - 'text', 'background', 'border' or 'all'
+@function _oColorsGetUseCase($usecase, $property) {
+	@if (not map-has-key($o-colors-usecases, $usecase)) {
+		@return null;
+	}
+
+	$props: map-get($o-colors-usecases, $usecase);
+
+	$color: map-get($props, $property);
+
+	@if ($color == null and $property != 'all') {
+		$color: map-get($props, all);
+	}
+
+	@if (map-has-key($props, '_deprecated')) {
+		@warn "Color use case '#{inspect($usecase)}' is deprecated (property '#{inspect($property)}' was requested): #{inspect(map-get($props, '_deprecated'))}";
+	}
+
+	@return $color;
+}
+
+/// Return the CSS colour name of the first defined use case in a prioritised list for a use case / property combination
+///
+/// @example scss
+/// // Single use case:
+/// body { color: oColorsGetColorFor(page, text); }
+///
+/// // Use case with one or multiple fallbacks:
+/// // Use "my-box" color if available. If not, fall back to the "box" use case.
+/// .box { background-color: oColorsGetColorFor(my-box box, background); }
+///
+/// // No specific property:
+/// .money-wrapper { background-color: oColorsGetColorFor(section-money); }
+/// .money-headline { color: oColorsGetColorFor(section-money); }
+///
+/// // Assign a different fallback if the use case doesn't exist
+/// .foo { background-color: oColorsGetColorFor(foo, background, $options: ('default': 'pink-tint-1')); }
+///
+/// @param {list} $namelist
+/// @param {String} $property [all]
+/// @param {map} $options [('default': false)] - default: fallback value (false, null, or one of $o-colors-palette)
+@function oColorsGetColorFor($namelist, $property: all, $options: ('default': false)) {
+	$default: map-get($options, 'default');
+	$color: null;
+
+	@each $name in $namelist {
+		@if ($color == null) {
+			$color: _oColorsGetUseCase($name, $property);
+		}
+	}
+
+	@if ($color == null) {
+		@if ($default or $default == null) {
+			@return $default;
+		} @else {
+			$warn: "Undefined use-case: can't resolve use case list '#{inspect($namelist)}'";
+
+			@if ($property) {
+				$warn: $warn + " for property '#{inspect($property)}'";
+			}
+
+			@warn $warn;
+		}
+	}
+
+	@return oColorsGetPaletteColor($color);
+}

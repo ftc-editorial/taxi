@@ -1,0 +1,35 @@
+{
+  "name": "ftc-share",
+  "authors": [
+    "weiguo.ni <neefrankie@gmail.com>"
+  ],
+  "description": "FT Chinese share module",
+  "main": [
+    "main.js",
+    "main.scss"
+  ],
+  "moduleType": [
+    "es6",
+    "node"
+  ],
+  "keywords": [
+    "ftc",
+    "social",
+    "share"
+  ],
+  "license": "MIT",
+  "homepage": "",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests",
+    "demo"
+  ],
+  "dependencies": {
+    "ftc-icons": "^1.4.5",
+    "dom-delegate": "~2.0.3",
+    "o-colors": "^3.3.1"
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "name": "data-report",
+  "private": true,
+  "dependencies": {
+    "jquery": "~2.1.4",
+    "jquery.scrollTo": "~2.1.2",
+    "normalize-css": "normalize.css#~3.0.3",
+    "ftc-share": "^0.2.3",
+    "ftc-icons": "^1.4.4",
+    "d3": "^3.5.16",
+    "zepto": "^1.1.6"
+  }
+}

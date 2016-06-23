@@ -1,0 +1,72 @@
+.header {
+	background-color: $headerBackColor;
+	position: fixed;
+	left: 0;
+	top: 0;
+	width: 100%;
+	height: $headerHeight;
+	z-index: 9999;
+}
+.header-logo-panel h1 {
+	padding: 0;
+	margin: 0;
+	@include clearfix;
+	a {
+		float: left;
+		color: #FFF;
+	}
+}
+.header-logo {
+	$height: $headerHeight * 2 / 3; /* 60 * 2 / 3 = 40px */
+	$margin: ($headerHeight - $height) / 2; /* 20px */
+	width: $height;
+	height: $height;
+	margin: $margin;
+	background-image: sassvg(brand-ftc);
+	background-color: $ftpink;
+	background-position: left center;
+	background-repeat: no-repeat;
+	background-size: contain;
+	text-indent: -999em;
+}
+.feature-title, .series-title {
+	height: $titleHeight; /* 20p */
+	line-height: $titleHeight; 
+	font-size: $titleHeight; 
+	margin: $titleMargin;
+	margin-left: 0;
+	padding-top: $barRaisedBy; /* 4px */
+	padding-bottom: $barRaisedBy;
+}
+.series-title {
+	$height: $headerHeight / 3;
+	$margin: ($headerHeight - $height) / 2 - $barRaisedBy;
+	border-left: 2px solid rgba(255, 255, 255, .5);
+	padding-left: $margin;
+	margin-right: 0;
+}
+
+/* Navigation */
+.small-menu {
+	display: none;
+}
+.nav__toc {
+	position: fixed;
+	top: 0;
+	left: 50%;
+	transform: translate(-50%, 0);
+	z-index: 9999;
+	line-height: $headerHeight;
+	a {
+		display: inline-block;
+		color: rgba(255, 255, 255, 0.4);
+		line-height: 30px;
+		font-size: 15px;
+		padding: 0 15px;
+	}
+	a.active {
+		color: oColorsGetPaletteColor('white');
+	}
+}
+
+

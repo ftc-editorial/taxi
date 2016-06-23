@@ -1,0 +1,193 @@
+/// Generate base share styles
+/// @param {String} $classname [o-share] - base class name
+@mixin oShareBase($classname: o-share) {
+	.#{$classname} {
+		display: inline-block;
+		ul {
+			margin: 0;
+			padding: 0;
+			list-style-type: none;
+			&::after {
+			  clear: both;
+			  content: "";
+			  display: table;
+			}
+		}
+	}
+	.#{$classname}__action {
+		float: left;
+		padding: 0;
+		margin: 0 5px 0 0;
+		a {
+			float: left;
+			text-decoration: none;
+			padding: $o-share-link-padding;
+			margin: 0;
+			border-radius: 3px;
+		}
+		i {
+			float: left;
+			width: $o-share-icon-size;
+			height: $o-share-icon-size;
+			white-space: nowrap;
+			text-indent: -999em;
+			overflow: hidden;
+			background-size: 100% 100%;
+			background-repeat: no-repeat;
+			background-position: 50% 50%;
+		}
+	}	
+}
+
+@mixin oShareSetIconSize($size, $classname: o-share) {
+	.#{$classname}__action {
+		@if (type-of($size) == number and $size != 0) {
+	        $size: if(unitless($size), $size * 1px, $size);
+	    }
+	    $i-size: $size - $o-share-link-padding * 2;
+		i {
+			width: $i-size;
+			height: $i-size;
+		}
+	}
+}
+// Currently designed three groups:
+// default - $color: 'white', $bgcolor: $name, $bghovercolor: transparent;
+// group1 - $color: 'white', $bgcolor: 'grey-tint1', $bghovercolor: $name
+// group2 - $color: 'white', $bgcolor: 'grey-tint1', $bghovercolor: 'teal-2'
+// group3 - $color: 'pink-tint4', $bgcolor: 'transparent', $bghovercolor: 'pink-tint2'
+
+@mixin oShareActionIcon($name, $color:'white', $bgcolor:$name,$bghovercolor: false, $classname: o-share) {
+
+	$fill-color: if((type-of($color) == "string"), oColorsGetPaletteColor($color), $color);
+
+	$bg-color: if((type-of($bgcolor) == "string"), oColorsGetPaletteColor($bgcolor), $bgcolor);
+	
+	@if ($bghovercolor) {
+		$bg-hover-color: if((type-of($bghovercolor) == "string"), oColorsGetPaletteColor($bghovercolor), $bghovercolor)	
+	}
+
+	.#{$classname}__action--#{$name} {
+		a
+		{	
+			background-color: $bg-color;
+			@if ($bghovercolor) {
+				&:hover {
+					background-color: $bg-hover-color;
+				}			
+			}
+		}
+		i {
+			$iconname: "social-" + $name;
+			background-image: sassvg($iconname, $fillcolor: $fill-color);
+		}
+	}
+}
+
+/// Action link styles
+/// @param {String} $classname [o-share] - base class name
+@mixin oShareActionLink($classname: o-share) {
+	.#{$classname}__action--url {
+		position: relative;
+		.#{$classname}-tooltip {
+			position: absolute;
+			white-space: nowrap;
+			top: 50%;
+			left: 100%;
+			transform: translateY(-50%);
+		}
+		input {
+			float: left;
+			border: 0;
+			border-radius: 2px;
+			padding: 3px 8px;
+			font-size: 14px;
+			box-shadow: 0 0 3px oColorsGetPaletteColor('grey-tint5');
+
+			&::-ms-clear {
+				display: none;
+			}
+		}		
+	}
+
+/* 	[data-o-share--js] .o-share__action--url {
+		display: block;
+	} */
+
+	.#{$classname}__action--url[aria-selected=true] {
+		a {
+			margin-right: 5px;
+		}
+
+	}
+}
+
+@mixin oShareLinkTooltip($classname: o-share) {
+	.#{$classname}__action {
+		a {
+			position: relative;
+			&::before,
+			&::after {
+				box-sizing: content-box;
+				position: absolute;
+				top: 100%;
+				left: 50%;
+				transform: translateX(-50%);
+				visibility: hidden;
+				z-index: 99;
+			}
+			&::before {
+				content: '';
+				border-color: $o-share-tooltip-bg;
+				border-style: none;
+				border: 5px solid transparent;
+				border-bottom: 6px solid $o-share-tooltip-bg;
+				margin-top: -4px;
+			}
+			&::after {
+				content: attr(data-link-tooltip);
+				border-radius: 3px;
+				width: auto;
+				height: 22px;
+				padding: 11px 11px 0 11px;
+				font-size: 13px;
+				line-height: 14px;
+				white-space: nowrap;
+				background-color: $o-share-tooltip-bg;
+				color: $o-share-tooltip-text;
+				margin-top: 7px;
+			}
+			&:hover:before,
+			&:hover:after,
+			&:focus:before,
+			&:focus:after {
+				visibility: visible;
+			}
+		}
+	}
+}
+
+@mixin oShareVertical($classname: o-share) {
+	clear: both;
+	margin: 0 0 5px;
+}
+
+@mixin oShareIcons($set: default) {
+	@if ($set == 'polychrome') {
+		@each $icon in $o-share-icons {
+			@include oShareActionIcon($icon, $color: 'white', $bgcolor: 'grey-tint1', $bghovercolor: $icon);
+		}		
+	} @else if ($set == 'duotone') {
+		@each $icon in $o-share-icons {
+			@include oShareActionIcon($icon, $color:'white', $bgcolor: 'grey-tint1', $bghovercolor:'teal-2');
+		}		
+	} @else if ($set == 'monochrome') {
+		@each $icon in $o-share-icons {
+			@include oShareActionIcon($icon, $color:'pink-tint4', $bgcolor: 'transparent', $bghovercolor:'pink-tint2');
+		}		
+	} @else {
+		@each $icon in $o-share-icons {
+			@include oShareActionIcon($icon);
+		}		
+	}
+}

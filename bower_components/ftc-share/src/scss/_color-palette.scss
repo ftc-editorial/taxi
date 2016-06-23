@@ -1,0 +1,3 @@
+@each $icon in $o-share-icons {
+	@include oColorsSetColor($icon, map-get($o-share-icon-colors, $icon));
+}

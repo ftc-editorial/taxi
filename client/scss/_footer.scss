@@ -1,0 +1,47 @@
+/*footer*/
+.footer {
+	background-color: #F6E9D8;
+	text-align: center;
+}
+.footer-nav-list {
+	list-style: none;
+	li {
+		display: inline;
+	}
+}
+.footer-nav {
+	padding-top: 1em;
+}
+.footer-copyright {
+	padding-bottom: 1em;
+}
+
+.to-top {
+	display: block;
+	background-color: rgba(164,170,180,0.5);
+	border-radius: 10px;
+	width: 50px;
+	height: 50px;
+	position: fixed;
+	right: .5em;
+	bottom: .5em;
+	&::before {
+		content: '';
+		display: block;
+		width: 0;
+		height: 0;		
+		border-top: 0;
+		border-left: 15px solid transparent;
+		border-right: 15px solid transparent;
+		border-bottom: 20px solid oColorsGetPaletteColor('white');
+		position: absolute;
+		top: 0;
+		left: 0;
+		right: 0;
+		bottom: 0;
+		margin: auto;
+	}
+	&:hover {
+		background-color: $headerBackColor;
+	}
+}
