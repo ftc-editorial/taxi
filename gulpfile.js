@@ -157,6 +157,7 @@ gulp.task('serve',
 
     gulp.watch('client/**/*.{css,png,jpg}', browserSync.reload);
     gulp.watch('client/index.mustache', gulp.parallel('mustache'));
+    gulp.watch('client/scss/*.scss', gulp.parallel('styles'));
     //gulp.watch('client/**/*.js', gulp.parallel('lint'));
   })
 );
